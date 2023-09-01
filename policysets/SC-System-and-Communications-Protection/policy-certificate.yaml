@@ -1,0 +1,35 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-install-cert-check
+  namespace: policies
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: SC System and Communications Protection
+    policy.open-cluster-management.io/controls: SC-8 Transmission Confidentiality and Integrity
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: CertificatePolicy # cert management expiration
+        metadata:
+          name: policy-openshift-certificates
+        spec:
+          namespaceSelector:
+            include: ["default","openshift-console","openshift-ingress"]
+            exclude: ["kube-*"]
+          remediationAction: inform # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: low
+          minimumDuration: 300h
+---
+apiVersion: policy.open-cluster-management.io/v1beta1
+kind: PolicySet
+metadata:
+  name: policies-system-and-communication
+  namespace: policies
+spec:
+  description: Configures SC Policies.
+  policies:
+  - policy-install-cert-check

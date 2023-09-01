@@ -1,0 +1,29 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-acm-si
+placementBindingDefaults:
+  name: binding-policy-acm-si
+policyDefaults:
+  categories:
+    - SI System and Information Integrity
+  controls: 
+    - SI-4 Information System Monitoring
+  namespace: policies
+  policySets:
+    - policies-system-and-information
+  standards:
+    - NIST SP 800-53
+
+policies:
+- name: policy-imagemanifestvuln
+  disabled: false
+  manifests:
+    - path: SI-System-and-Information-Integrity/policy-imagemanifestvuln.yaml
+  remediationAction: "enforce"
+
+policySets:
+  - name: policies-system-and-information
+    description: Configures SI Policies.
+    placement:
+      placementRuleName: "all-clusters"

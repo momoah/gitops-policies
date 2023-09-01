@@ -1,0 +1,31 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-acm-ca
+placementBindingDefaults:
+  name: binding-policy-acm-ca
+policyDefaults:
+  categories:
+    - CA Security Assessment and Authorization
+  controls: 
+    - CA-2 Security Assessments
+  namespace: policies
+  policySets:
+    - policies-ca-security-assessment-and-authorization
+  standards:
+    - NIST SP 800-53
+
+policies:
+- name: policy-comp-operator
+  disabled: false
+  controls: 
+    - CA-7 Continuous Monitoring
+  manifests:
+    - path: CA-Security-Assessment-and-Authorization/policy-compliance-operator-install.yaml
+  remediationAction: "enforce"
+
+policySets:
+  - name: policies-ca-security-assessment-and-authorization
+    description: Install compliance operator.
+    placement:
+      placementRuleName: "all-clusters"

@@ -1,0 +1,24 @@
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: gen-policy-generator
+policyDefaults:
+  namespace: policy-governance
+  remediationAction: enforce
+  consolidateManifests: false
+  policySets:
+    - compliance-operators
+placementBindingDefaults:
+  name: "compliance-binding"
+
+policies:
+  - name: compliance-operator
+    remediationAction: enforce
+    manifests:
+      - path: compliance/compliance-operator.yml
+
+policySets:
+  - name: compliance-operators
+    placement:
+      placementRuleName: "all-clusters"

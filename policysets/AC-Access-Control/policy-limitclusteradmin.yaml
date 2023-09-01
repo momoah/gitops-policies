@@ -1,0 +1,28 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-limit-clusteradmin
+  namespace: policies
+spec:
+  remediationAction: inform
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: IamPolicy
+        metadata:
+          name: policy-iampolicy-limit-clusteradmin
+        spec:
+          severity: medium
+          remediationAction: inform
+          maxClusterRoleBindingUsers: 2
+---
+apiVersion: policy.open-cluster-management.io/v1beta1
+kind: PolicySet
+metadata:
+  name: policies-access-control
+  namespace: policies
+spec:
+  description: Limit cluster admin role.
+  policies:
+  - policy-limit-clusteradmin

@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: policy-governance
+  labels:
+    tekton.rh-reg-auth: 'true'

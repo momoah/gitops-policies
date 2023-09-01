@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  # - operators/
+  - ../../policysets/
+
+namespace: dev-policies
+
+patches: 
+  - patch: |-
+      - op: replace
+        path: /placementRef/name
+        value: dev-only
+    target:
+      kind: PlacementBinding
+
+resources:
+  - ../../acm-placements/

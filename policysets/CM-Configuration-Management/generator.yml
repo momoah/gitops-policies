@@ -1,0 +1,43 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-acm-cm
+placementBindingDefaults:
+  name: binding-policy-acm-cm
+policyDefaults:
+  categories:
+    - CM Configuration Management
+  controls: 
+    - CM-6 Configuration Settings
+  namespace: policies
+  policySets:
+    - policies-config-management
+  standards:
+    - NIST SP 800-53
+
+policies:
+- name: policy-install-comp-operator-cis-scan
+  disabled: false
+  manifests:
+    - path: CM-Configuration-Management/policy-compliance-operator-cis-scan.yaml
+  remediationAction: "enforce"
+
+- name: policy-install-comp-operator-e8-scan
+  disabled: false
+  manifests:
+    - path: CM-Configuration-Management/policy-compliance-operator-e8-scan.yaml
+  remediationAction: "enforce"
+
+- name: policy-install-gatekeeper
+  disabled: false
+  controls: 
+  - CM-2 Baseline Configuration
+  manifests:
+    - path: CM-Configuration-Management/policy-gatekeeper-operator-downstream.yaml
+  remediationAction: "enforce"
+
+policySets:
+  - name: policies-config-management
+    description: Configures CM Policies.
+    placement:
+      placementRuleName: "all-clusters"

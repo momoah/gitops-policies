@@ -1,0 +1,35 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-acm-access-control
+placementBindingDefaults:
+  name: binding-policy-acm-ac
+policyDefaults:
+  categories:
+    - AC Access Control
+  controls: 
+    - AC-3 Access Enforcement
+  standards:
+    - NIST SP 800-53
+  namespace: policies
+  policySets:
+    - policies-access-control
+
+policies:
+- name: policy-install-access-control
+  disabled: false
+  manifests:
+    - path: AC-Access-Control/policy-limitclusteradmin.yaml
+  namespaceSelector:
+    include:
+      - "*"
+    exclude:
+      - kube-*
+      - openshift-*
+  remediationAction: "enforce"
+
+policySets:
+  - name: policies-access-control
+    description: Limit cluster admin role.
+    placement:
+      placementRuleName: "hub-only"

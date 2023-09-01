@@ -1,0 +1,53 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: policy-acm-sc
+placementBindingDefaults:
+  name: binding-policy-acm-sc
+policyDefaults:
+  categories:
+    - SC System and Communications Protection
+  controls: 
+    - SC-8 Transmission Confidentiality and Integrity
+  namespace: policies
+  policySets:
+    - policies-system-and-communication
+  standards:
+    - NIST SP 800-53
+
+policies:
+- name: policy-install-cert-check
+  disabled: false
+  manifests:
+    - path: SC-System-and-Communications-Protection/policy-certificate.yaml
+  remediationAction: "enforce"
+
+- name: policy-etcdencryption
+  disabled: false
+  manifests:
+    - path: SC-System-and-Communications-Protection/policy-etcdencryption.yaml
+  remediationAction: "enforce"
+
+- name: policy-limitmemory
+  disabled: false
+  manifests:
+    - path: SC-System-and-Communications-Protection/policy-limitmemory.yaml
+  remediationAction: "enforce"
+
+- name: policy-podsecuritypolicy
+  disabled: false
+  manifests:
+    - path: SC-System-and-Communications-Protection/policy-psp.yaml
+  remediationAction: "enforce"
+
+- name: policy-securitycontextconstraints
+  disabled: false
+  manifests:
+    - path: SC-System-and-Communications-Protection/policy-scc.yaml
+  remediationAction: "enforce"
+
+policySets:
+  - name: policies-system-and-communication
+    description: Configures SC Policies.
+    placement:
+      placementRuleName: "hub-only"
